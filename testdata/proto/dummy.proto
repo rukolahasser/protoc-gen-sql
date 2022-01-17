@@ -1,0 +1,21 @@
+syntax = "proto3";
+package test;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "blep/test";
+
+message Rucola {
+  google.protobuf.Timestamp ts = 1;
+  int32 typeint32 = 2;
+  uint64 typeuint64 = 3;
+  bytes typebyte = 4;
+  bytes typeuint256 = 5; // uint256
+  repeated int32 typearray = 6;
+  int32 typein8 = 7; // int8
+  int32 typeuin8 = 8; // uint8
+  int32 typeint16 = 9; // int16
+  int32 typeuint16 = 10; // uint16
+  uint32 typeuint32 = 11;
+  int64 typeint64 = 12;
+}
