@@ -9,11 +9,7 @@ import (
 )
 
 var (
-	fileName     string
-	version      string
-	contractName string
-	packageName  string
-	owner        string
+	fileName string
 )
 
 func main() {
@@ -23,10 +19,6 @@ func main() {
 	}
 
 	flag.StringVar(&fileName, "file", "", "Generated file name.")
-	flag.StringVar(&version, "version", "0_0_0", "version number.")
-	flag.StringVar(&contractName, "contract", "", "contract name.")
-	flag.StringVar(&packageName, "package", "", "package name.")
-	flag.StringVar(&owner, "owner", "", "owner.")
 
 	protogen.Options{
 		ParamFunc: flag.Set,
@@ -35,8 +27,7 @@ func main() {
 			if !f.Generate {
 				continue
 			}
-			sqlgen.GenerateUpFile(gen, f, fileName, packageName, owner, contractName, version)
-			sqlgen.GenerateDownFile(gen, f, fileName, packageName, owner, contractName, version)
+			sqlgen.GenerateTableCreationFile(gen, f, fileName)
 		}
 		return nil
 	})

@@ -1,5 +1,5 @@
 # protoc-gen-sql
-This is a `protoc` plugin that generates `.sql` files from `.proto` for db migrate.
+This is a `protoc` plugin that generates `.sql` files from `.proto` for database migration.
 It has to be used along with `protoc`.
 
 ## Install
@@ -12,18 +12,14 @@ It will install the plugin in your `$GOBIN`
 ## Run the plugin
 
 ```
-protoc --sql_out=$DST_DIR --sql_opt=file=000001_xxxx,version=1_2_3,contract=MyContract,owner=asuka,package=test $SRC_DIR/xxxxx.proto
+protoc --sql_out=$DST_DIR --sql_opt=file=eva $SRC_DIR/xxxxx.proto
 ```
 
-It will generate two files named `000001_xxxx.up.sql` and `000001_xxxx.down.sql` in your destination directory.
+It will generate a file named `eva.sql` in your destination directory.
 
 You can pass the `file` to `--sql_opt` to specify the name of generated file, otherwise it will use the default name
 same as `.proto` file.
 
-You can pass the `version` to specify the connector version, and `contract` to specify the contract name.
-You can pass the `owner` to specify the connector owner, and `package` to specify the package name.
-
-The default table name is in the form of `owner.package.version.contract.event`
 For example, if you have a `.proto`:
 
 ```protobuf
@@ -32,9 +28,9 @@ package compound;
 
 import "google/protobuf/timestamp.proto";
 
-option go_package = "blep/compound";
+option go_package = "rukolahasser/test";
 
-message Mint {
+message MyMessage {
   google.protobuf.Timestamp ts = 1;
   // index
   uint64 block = 2;
@@ -45,29 +41,27 @@ message Mint {
 
 It will generate a table:
 ```sql
-CREATE TABLE IF NOT EXISTS "asuka.test.1_2_3.mycontract.mint"
+CREATE TABLE IF NOT EXISTS "rukolahasser.test.mymessage"
 (
-    ns      TEXT        NOT NULL,
-    s       TEXT        NOT NULL,
-    "ts"    TIMESTAMPTZ NOT NULL,
-    "block" INT8,
+    "ts"    timestamptz NOT NULL,
+    "block" int8,
     "idx"   NUMERIC(78, 0),
-    "arr"   INT8[]
+    "arr"   int8[]
 );
-CREATE INDEX ON "asuka.test.1_2_3.mycontract.mint" (block);
+CREATE INDEX ON "rukolahasser.test.mymessage" (block);
 ```
 
 For more usage information, please refer to `protoc` docs.
 
 # Leading Comments
 
-You may want to create a index column, you can use leading comments right above the field:
+You may want to create an index column, you can use leading comments right above the field:
 ```protobuf
 syntax = "proto3";
 
-message Mint {
+message MyMessage {
   // index
-  int32 indexedBlock = 1;
+  int32 indexed_block = 1;
 }
 ```
 
@@ -78,13 +72,13 @@ Sometimes you want to generate different types in postgres, you can use trailing
 ```protobuf
 syntax = "proto3";
 
-message Mint {
+message MyMessage {
   int32 block = 1;
   bytes idx = 2; // uint256
 }
 ```
 
-So it will generate a table which has a column `"idx" NUMERIC(78,0)` instead of `"idx" BYTEA`.
+So it will generate a table which has a column `"idx" NUMERIC(78,0)` instead of `"idx" bytea`.
 
 Trailing comment and postgres type mapping:
 

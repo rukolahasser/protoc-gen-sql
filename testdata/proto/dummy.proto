@@ -3,19 +3,20 @@ package test;
 
 import "google/protobuf/timestamp.proto";
 
-option go_package = "blep/test";
+option go_package = "rukolahasser/test";
 
-message Rucola {
+message MyMessage {
   google.protobuf.Timestamp ts = 1;
-  int32 typeint32 = 2;
-  uint64 typeuint64 = 3;
-  bytes typebyte = 4;
-  bytes typeuint256 = 5; // uint256
-  repeated int32 typearray = 6;
-  int32 typein8 = 7; // int8
-  int32 typeuin8 = 8; // uint8
-  int32 typeint16 = 9; // int16
-  int32 typeuint16 = 10; // uint16
-  uint32 typeuint32 = 11;
-  int64 typeint64 = 12;
+  int32 type_int32 = 2;
+  uint64 type_uint64 = 3;
+  // index
+  bytes type_bytes = 4;
+  bytes type_uint256 = 5; // uint256
+  repeated int32 type_array = 6;
+  int32 type_in8 = 7; // int8
+  int32 type_uin8 = 8; // uint8
+  int32 type_int16 = 9; // int16
+  int32 type_uint16 = 10; // uint16
+  uint32 type_uint32 = 11;
+  int64 type_int64 = 12;
 }
